@@ -6,21 +6,28 @@ var getSingleUsername = function(userId, callback) {
       callback(err, null);
       return;
     }
-
     var username = JSON.parse(body).username;
     callback(null, username);
   });
 };
 
 var getUsernames = function(userIds, callback) {
-  // YOUR CODE HERE
+  var arr = [];
+  var counter = 0;
+    for (var i = 0; i < userIds.length; i++){
+    getSingleUsername(userIds[i], function(err, username){
+      if (err){
+        callback(err, null)
+        return;
+       }
+     arr.push(username);
+     counter++
+     if (counter === userIds.length){
+     callback(null, arr);
+     }
+    })
+   }
 };
 
-// usage of getUsernames:
-getUsernames([1, 2, 3], function(users) {
-  var user1 = users[0];
-  var user2 = users[1];
-  var user3 = users[2];
-
-  // do something with usernames here.
-})
+module.exports = {
+  getUsernames:getUsernames};
